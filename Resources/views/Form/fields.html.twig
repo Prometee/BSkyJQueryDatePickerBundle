@@ -44,7 +44,6 @@
 				return {};
 			};
 			opts['onSelect'] = function(date) {
-				console.log(date);
 				jQuery('#{{ id }}_month').val(parseInt(date.substring(0, 2)));
 				jQuery('#{{ id }}_day').val(parseInt(date.substring(3, 5)));
 				jQuery('#{{ id }}_year').val(parseInt(date.substring(6, 10)));
