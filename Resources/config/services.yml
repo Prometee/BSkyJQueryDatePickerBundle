@@ -1,0 +1,8 @@
+parameters:
+     bsky_jquerydatepicker.form.type.class: BSky\Bundle\JQueryDatePickerBundle\Form\Extension\Type\JQueryDatePickerType
+     
+services:
+    form.type.bsky_jquerydatepicker:
+        class: %bsky_jquerydatepicker.form.type.class%
+        tags:
+            - { name: form.type, alias: bsky_jquerydatepicker }
