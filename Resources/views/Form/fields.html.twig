@@ -35,6 +35,7 @@
 			var opts = {{ jquery_datepicker | raw }};
 			opts = (opts == []) ? {} : opts;
 
+			opts['dateFormat'] = 'mm/dd/yy';
 			opts['beforeShow'] = function() {
 				jQuery('#form_bsky_jquerydatepicker_{{ id }}').val(
 					  jQuery('#{{ id }}_month').val() + '/'
@@ -43,10 +44,10 @@
 				);
 				return {};
 			};
-			opts['onSelect'] = function(date) {
-				jQuery('#{{ id }}_month').val(parseInt(date.substring(0, 2)));
-				jQuery('#{{ id }}_day').val(parseInt(date.substring(3, 5)));
-				jQuery('#{{ id }}_year').val(parseInt(date.substring(6, 10)));
+			opts['onSelect'] = function(date, inst) {
+				jQuery('#{{ id }}_month').val(parseInt(inst.currentMonth)+1); //zero based month
+				jQuery('#{{ id }}_day').val(parseInt(inst.currentDay));
+				jQuery('#{{ id }}_year').val(parseInt(inst.currentYear));
 			};
 
 			//this date could be false
