@@ -27,7 +27,10 @@ class BSkyJQueryDatePickerExtension extends Extension
 		
 		$container->setParameter('twig.form.resources', array_merge(
 			$container->getParameter('twig.form.resources'),
-			array('BSkyJQueryDatePickerBundle:Form:fields.html.twig')
+			array(
+                'BSkyJQueryDatePickerBundle:Form:date.html.twig',
+                'BSkyJQueryDatePickerBundle:Form:datetime.html.twig'
+            )
 		));
     }
 }

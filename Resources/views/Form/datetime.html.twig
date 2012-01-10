@@ -1,0 +1,87 @@
+{% block bsky_jquerydatetimepicker_style %}
+<style>
+	#form_bsky_jquerydatetimepicker_{{ id }} .form_bsky_jquerydatetimepicker_selects,
+    #form_bsky_jquerydatetimepicker_{{ id }} .form_bsky_jquerydatetimepicker_input {
+		float: left;
+	}
+    #form_bsky_jquerydatetimepicker_{{ id }} .form_bsky_jquerydatetimepicker_input {
+        margin-right: 10px;
+    }
+	#form_bsky_jquerydatetimepicker_{{ id }} .form_bsky_jquerydatetimepicker_input .ui-datepicker-trigger {
+		padding: 5px;
+		margin: 0 5px;
+	}
+	#form_bsky_jquerydatetimepicker_{{ id }} .clear {
+		clear: both;
+	}
+</style>
+{% endblock %}
+
+{% block bsky_jquerydatetimepicker_widget %}
+<div id="form_bsky_jquerydatetimepicker_{{ id }}">
+    {{ block('bsky_jquerydatetimepicker_style') }}
+	<div class="form_bsky_jquerydatetimepicker_selects">
+		<div class="datetime-widget">
+        {{ form_widget(form.date) }}
+        </div>
+	</div>
+	<div class="form_bsky_jquerydatetimepicker_input">
+		<input id="form_bsky_jquerydatetimepicker_input_{{ id }}" type="hidden" />
+	</div>
+    <div class="form_bsky_jquerydatetimepicker_selects">
+		<div class="datetime-widget">
+        {{ form_widget(form.time) }}
+        </div>
+	</div>
+	<div class="clear"></div>
+    <div>
+        {{ form_errors(form.date) }}
+        {{ form_errors(form.time) }}
+    </div>
+	{{ block('bsky_jquerydatetimepicker_script') }}
+</div>
+{% endblock %}
+	
+{% block bsky_jquerydatetimepicker_script %}
+<script>
+//In the case where you load jQuery at the bottom of the page
+//we wait for jQuery
+(function() {
+	var waitJQuery = function() {
+		if (window.jQuery && jQuery.ui) {
+			var opts = {{ jquery_datetimepicker | raw }};
+			opts = (opts == []) ? {} : opts;
+
+			opts['dateFormat'] = 'mm/dd/yy';
+			opts['beforeShow'] = function() {
+				jQuery('#form_bsky_jquerydatetimepicker_input_{{ id }}').val(
+					  jQuery('#{{ id }}_date_month').val() + '/'
+					+ jQuery('#{{ id }}_date_day').val() + '/'
+					+ jQuery('#{{ id }}_date_year').val()
+				);
+				return {};
+			};
+			opts['onSelect'] = function(date, inst) {
+				jQuery('#{{ id }}_date_month').val(parseInt(inst.currentMonth)+1); //zero based month
+				jQuery('#{{ id }}_date_day').val(parseInt(inst.currentDay));
+				jQuery('#{{ id }}_date_year').val(parseInt(inst.currentYear));
+			};
+
+			//this date could be wrong
+			var startIndex = (jQuery('#{{ id }}_date_month option:first').attr('value').length == 0) ? 1 : 0;
+			opts['minDate'] = jQuery('#{{ id }}_date_month option:eq('+startIndex+')').attr('value') + '/'
+				+ jQuery('#{{ id }}_date_day option:eq('+startIndex+')').attr('value') + '/'
+				+ jQuery('#{{ id }}_date_year option:eq('+startIndex+')').attr('value');
+			opts['maxDate'] = jQuery('#{{ id }}_date_month option:last').attr('value') + '/'
+				+ jQuery('#{{ id }}_date_day option:last').attr('value') + '/'
+				+ jQuery('#{{ id }}_date_year option:last').attr('value');
+
+			jQuery('#form_bsky_jquerydatetimepicker_input_{{ id }}').datepicker(opts);
+		} else {
+			window.setTimeout(waitJQuery, 1);
+		}
+	}
+	waitJQuery();
+})();
+</script>
+{% endblock %}

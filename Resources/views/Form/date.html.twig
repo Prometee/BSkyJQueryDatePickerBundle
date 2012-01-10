@@ -1,28 +1,30 @@
 {% block bsky_jquerydatepicker_style %}
 <style>
-	.form_bsky_jquerydatepicker_selects {
+	#form_bsky_jquerydatetimepicker_{{ id }} .form_bsky_jquerydatepicker_selects {
 		float: left;
 	}
-	.form_bsky_jquerydatepicker_input .ui-datepicker-trigger {
+	#form_bsky_jquerydatetimepicker_{{ id }} .form_bsky_jquerydatepicker_input .ui-datepicker-trigger {
 		padding: 5px;
 		margin-left: 5px;
 	}
-	.clear {
+	#form_bsky_jquerydatetimepicker_{{ id }} .clear {
 		clear: both;
 	}
 </style>
 {% endblock %}
 
 {% block bsky_jquerydatepicker_widget %}
+<div id="form_bsky_jquerydatetimepicker_{{ id }}">
 	{{ block('bsky_jquerydatepicker_style') }}
 	<div class="form_bsky_jquerydatepicker_selects">
 		{{ block('date_widget') }}
 	</div>
 	<div class="form_bsky_jquerydatepicker_input">
-		<input id="form_bsky_jquerydatepicker_{{ id }}" type="hidden" />
+		<input id="form_bsky_jquerydatepicker_input_{{ id }}" type="hidden" />
 	</div>
 	<div class="clear"></div>
 	{{ block('bsky_jquerydatepicker_script') }}
+</div>
 {% endblock %}
 	
 {% block bsky_jquerydatepicker_script %}
@@ -37,7 +39,7 @@
 
 			opts['dateFormat'] = 'mm/dd/yy';
 			opts['beforeShow'] = function() {
-				jQuery('#form_bsky_jquerydatepicker_{{ id }}').val(
+				jQuery('#form_bsky_jquerydatepicker_input_{{ id }}').val(
 					  jQuery('#{{ id }}_month').val() + '/'
 					+ jQuery('#{{ id }}_day').val() + '/'
 					+ jQuery('#{{ id }}_year').val()
@@ -50,7 +52,7 @@
 				jQuery('#{{ id }}_year').val(parseInt(inst.currentYear));
 			};
 
-			//this date could be false
+			//this date could be wrong
 			var startIndex = (jQuery('#{{ id }}_month option:first').attr('value').length == 0) ? 1 : 0;
 			opts['minDate'] = jQuery('#{{ id }}_month option:eq('+startIndex+')').attr('value') + '/'
 				+ jQuery('#{{ id }}_day option:eq('+startIndex+')').attr('value') + '/'
@@ -59,7 +61,7 @@
 				+ jQuery('#{{ id }}_day option:last').attr('value') + '/'
 				+ jQuery('#{{ id }}_year option:last').attr('value');
 
-			jQuery('#form_bsky_jquerydatepicker_{{ id }}').datepicker(opts);
+			jQuery('#form_bsky_jquerydatepicker_input_{{ id }}').datepicker(opts);
 		} else {
 			window.setTimeout(waitJQuery, 1);
 		}

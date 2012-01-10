@@ -1,8 +1,13 @@
 parameters:
      bsky_jquerydatepicker.form.type.class: BSky\Bundle\JQueryDatePickerBundle\Form\Extension\Type\JQueryDatePickerType
+     bsky_jquerydatetimepicker.form.type.class: BSky\Bundle\JQueryDatePickerBundle\Form\Extension\Type\JQueryDateTimePickerType
      
 services:
     form.type.bsky_jquerydatepicker:
         class: %bsky_jquerydatepicker.form.type.class%
         tags:
             - { name: form.type, alias: bsky_jquerydatepicker }
+    form.type.bsky_jquerydatetimepicker:
+        class: %bsky_jquerydatetimepicker.form.type.class%
+        tags:
+            - { name: form.type, alias: bsky_jquerydatetimepicker }
